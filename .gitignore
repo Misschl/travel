@@ -1,0 +1,9 @@
+
+# vue
+travel_vue/node_modules
+travel_vue/.idea
+travel_vue/dist
+
+travel_go/.idea
+
+travel_python/.idea
