@@ -1,14 +1,11 @@
 package router
 
 import (
-    "travel/app/api/hello"
-    "github.com/gogf/gf/frame/g"
-	"github.com/gogf/gf/net/ghttp"
+	"github.com/gogf/gf/frame/g"
+	"travel/app/api/user"
 )
 
 func init() {
 	s := g.Server()
-	s.Group("/", func(group *ghttp.RouterGroup) {
-		group.ALL("/", hello.Hello)
-	})
+	s.BindObject("/account", new(user.Account))
 }
