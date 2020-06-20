@@ -1,9 +1,9 @@
 package utils
 
 func Uint8SliceString(s []uint8) string {
-	result := []byte{}
+	var result []byte
 	for _, i := range s {
-		result = append(result, byte(i))
+		result = append(result, i)
 	}
 	return string(result)
 }

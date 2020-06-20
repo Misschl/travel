@@ -101,7 +101,6 @@ func (this *LoginForm) authenticate(r *ghttp.Request) {
 }
 
 func (this *LoginForm) getJwt(r *ghttp.Request) {
-	// todo add jwt here
 
 	userId := r.GetCtxVar("user").Int()
 
@@ -116,9 +115,8 @@ func (this *LoginForm) getJwt(r *ghttp.Request) {
 }
 
 func (this *LoginForm) update(user *tbl_user.Entity) {
-	// todo 更新登录时间
 	user.LastLoginTime = gtime.Now()
-	user.Update()
+	_, _ = user.Update()
 }
 
 func (this *LoginForm) writeResponse(r *ghttp.Request) {
@@ -144,8 +142,7 @@ type SendRegisterMailForm struct {
 }
 
 // do nothing, just implement Modeler
-func (this *SendRegisterMailForm) Validate(request *ghttp.Request) {}
-
+func (this *SendRegisterMailForm) Validate(*ghttp.Request) {}
 
 func (this *SendRegisterMailForm) sendMail(r *ghttp.Request) {
 	randInt := r.GetCtxVar("randInt").String()
