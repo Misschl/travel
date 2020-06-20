@@ -1,13 +1,9 @@
 package utils
 
-import (
-	"strconv"
-)
-
-func Uint8SliceToInt(s []uint8) (int, error) {
+func Uint8SliceString(s []uint8) string {
 	result := []byte{}
 	for _, i := range s {
 		result = append(result, byte(i))
 	}
-	return strconv.Atoi(string(result))
+	return string(result)
 }
