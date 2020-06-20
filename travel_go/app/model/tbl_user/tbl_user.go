@@ -13,19 +13,19 @@ import (
 )
 
 // Fill with you ideas below.
-const salt = "u!a@)9gws@$8xkw4^2z^)31(&=&o2l9k&gwgpmdvpnaw9bvy9f"
+const Salt = "u!a@)9gws@$8xkw4^2z^)31(&=&o2l9k&gwgpmdvpnaw9bvy9f"
 
 // 保证相同的密码加密成不同的密文
 func createPassword(s string) string {
-	randString := grand.Str(salt, 6)
-	encryptStr := randString + salt + s
+	randString := grand.Str(Salt, 6)
+	encryptStr := randString + Salt + s
 	return randString + gsha1.Encrypt(encryptStr)
 }
 
 // 判断两个密码是否一致
 func checkPassword(password, realPassword string) bool {
 	randString := realPassword[0:6]
-	encryptStr := randString + salt + password
+	encryptStr := randString + Salt + password
 	encryptPassword := randString + gsha1.Encrypt(encryptStr)
 	return encryptPassword == realPassword
 }
@@ -62,4 +62,9 @@ func Authenticate(email, password string) (*Entity, bool) {
 		return nil, false
 	}
 	return user, true
+}
+
+// 获取当前的用户
+func GetCurrentUser(uid interface{}) (*Entity, error) {
+	return Model.FindOne("id=?", uid)
 }

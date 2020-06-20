@@ -7,5 +7,7 @@ import (
 )
 
 func main() {
+	//server := g.Server()
+	//server.Use(MiddlewareCORS)
 	g.Server().Run()
 }

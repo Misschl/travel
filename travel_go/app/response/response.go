@@ -23,3 +23,10 @@ func SeverErrorResponse(message string) Response {
 	}
 }
 
+func ForbiddenResponse(message string) Response {
+	return Response{
+		Success: false,
+		Message: message,
+		Code:    403,
+	}
+}
