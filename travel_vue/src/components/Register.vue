@@ -84,7 +84,6 @@
                 codeBtnText: "点击获取验证码",
                 codeBtnDisable: false,
                 timeId: null,
-                waitTime: 10,
                 getEmailCode: false,
             }
         },
@@ -94,6 +93,7 @@
                 this.$refs.registerFormRef.validateField('email', async valid => {
                     if (!valid) {
                         this.getEmailCode = true;
+                        this.resetWaitTime(60);
                         // todo 请求发送邮件接口
                         const {data: resp} = await this.$http.post('account/send-mail', {email: this.registerForm.email});
                         if (resp.success) {
@@ -102,8 +102,6 @@
                                 center: true,
                                 type: "success"
                             });
-                            // 开启定时器
-                            this.timeId = setInterval(this.codeBtnActive, 1000);
                         } else {
                             this.$message({
                                 message: resp.message,
@@ -117,7 +115,6 @@
             register() {
                 this.$refs.registerFormRef.validate(async valid => {
                     if (valid) {
-
                         // 校验是否获取了验证码
                         if (!this.getEmailCode) {
                             return this.$message({
@@ -147,18 +144,27 @@
                 })
             },
             codeBtnActive() {
-                if (this.timeDown === this.waitTime) {
+                let waitTime = window.localStorage.getItem("waitTime");
+                if (!waitTime) {
+                    this.resetWaitTime(0)
+                }
+                waitTime = parseInt(waitTime);
+                if (waitTime === 0) {
                     this.codeBtnText = "点击获取验证码";
                     this.codeBtnDisable = false;
-                    this.timeDown = 0;
-                    // 定时器清除
-                    clearInterval(this.timeId)
                 } else {
                     this.codeBtnDisable = true;
-                    this.timeDown++;
-                    this.codeBtnText = `重新发送${this.waitTime - this.timeDown}s`;
+                    waitTime--;
+                    window.localStorage.setItem("waitTime", waitTime + "");
+                    this.codeBtnText = `重新发送${waitTime}s`;
                 }
+            },
+            resetWaitTime(value) {
+                window.localStorage.setItem("waitTime", value)
             }
+        },
+        created() {
+            setInterval(this.codeBtnActive, 1000)
         }
     }
 </script>
