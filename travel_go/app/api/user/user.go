@@ -15,13 +15,23 @@ type Account struct{}
 // 注册接口
 func (*Account) Register(r *ghttp.Request) {
 	var registerForm *form.RegisterForm
-	service.ParseValidateAndSave(registerForm, r)
+
+	if err := r.Parse(&registerForm); err != nil {
+		_ = r.Response.WriteJsonExit(response.RequestBadResponse(err.Error()))
+	}
+
+	service.ValidateAndSave(registerForm, r)
 }
 
 // 登录接口
 func (*Account) Login(r *ghttp.Request) {
 	var loginForm *form.LoginForm
-	service.ParseValidateAndSave(loginForm, r)
+
+	if err := r.Parse(&loginForm); err != nil {
+		_ = r.Response.WriteJsonExit(response.RequestBadResponse(err.Error()))
+	}
+
+	service.ValidateAndSave(loginForm, r)
 }
 
 // 用户信息接口
@@ -42,5 +52,10 @@ func (*Account) Info(r *ghttp.Request) {
 // 发送邮件接口
 func (*Account) SendMail(r *ghttp.Request) {
 	var sendMailForm *form.SendRegisterMailForm
-	service.ParseValidateAndSave(sendMailForm, r)
+
+	if err := r.Parse(&sendMailForm); err != nil {
+		_ = r.Response.WriteJsonExit(response.RequestBadResponse(err.Error()))
+	}
+
+	service.ValidateAndSave(sendMailForm, r)
 }
