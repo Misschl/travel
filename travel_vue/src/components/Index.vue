@@ -1,12 +1,34 @@
 <template>
-    <div>
-        <router-view/>
+    <div class="container">
+        <div class="view">
+            <router-view/>
+        </div>
         <el-footer>
-            <el-row :gutter="20" type="flex" class="row-bg" justify="center">
-                <el-col :span="6" v-for="menu in menuList" :key="menu.path">
-                    <div class="menu" @click="toMenuPage(menu.path)">
-                        <i :class="menu.icon"/>
-                        <div>{{menu.name}}</div>
+            <el-row :gutter="20" type="flex" class="row-bg" justify="space-around">
+                <el-col :span="6">
+                    <div class="menu" @click="toMenuPage('/home')">
+                        <i class="el-icon-s-home"/>
+                        <div>首页</div>
+                    </div>
+                </el-col>
+                <el-col :span="6">
+                    <div class="menu" @click="toMenuPage('/behavior')">
+                        <i class="el-icon-coffee-cup"/>
+                        <div>动态</div>
+                    </div>
+                </el-col>
+                <el-col :span="6">
+                    <div class="menu" @click="toMenuPage('/friends')">
+                        <el-badge :value="3" type="primary">
+                            <i class="el-icon-star-off"/>
+                        </el-badge>
+                        <div>好友</div>
+                    </div>
+                </el-col>
+                <el-col :span="6">
+                    <div class="menu" @click="toMenuPage('/user')">
+                        <i class="el-icon-s-custom"/>
+                        <div>我的</div>
                     </div>
                 </el-col>
             </el-row>
@@ -18,36 +40,49 @@
     export default {
         name: "Index",
         data() {
-            return {
-                menuList: [
-                    {name: "首页", icon: "el-icon-s-home", path: "/home"},
-                    {name: "首页", icon: "el-icon-s-home", path: "/home"},
-                    {name: "首页", icon: "el-icon-s-home", path: "/home"},
-                    {name: "我的", icon: "el-icon-s-custom", path: "/user"},
-                ]
-            }
+            return {}
         },
         methods: {
             toMenuPage(path) {
                 this.$router.push(path)
+            },
+            async getCurrentUser() {
+                const {data: resp} = await this.$http.get("account/info");
+                console.log(resp)
             }
+        }, created() {
+            this.getCurrentUser()
         }
     }
 </script>
 
 <style scoped>
+
+    .container {
+        height: 100%;
+    }
+
+    .view {
+        margin-top: 10px;
+        margin-left: 8px;
+        margin-right: 8px;
+        height: 89%;
+    }
+
     .el-footer {
-        position: absolute;
+        position: relative;
         bottom: 0;
         width: 100%;
         border-top: 1px solid #C0C4CC;
-        min-width: 100%;
     }
 
+
     .menu {
+        position: relative;
         color: #C0C4CC;
         text-align: center;
-        margin-top: 8px;
-        margin-right: 20px;
+        padding-top: 20%;
     }
+
+
 </style>
